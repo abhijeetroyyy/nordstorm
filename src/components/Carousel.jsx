@@ -70,50 +70,84 @@ const Carousel = () => {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 5,
+    slidesToShow: 4,  // Default for large screens
     slidesToScroll: 1,
+    nextArrow: (
+      <div className="absolute top-0 right-0 transform translate-y-1/2 p-4 bg-black text-white rounded-full shadow-lg z-10 cursor-pointer">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          className="w-10 h-10 text-gray-200"
+        >
+          <path
+            d="M10 6l6 6-6 6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+          />
+        </svg>
+      </div>
+    ),
+    prevArrow: (
+      <div className="absolute top-0 left-0 transform translate-y-1/2 p-4 bg-black text-white rounded-full shadow-lg z-10 cursor-pointer">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          className="w-10 h-10 text-gray-200"
+        >
+          <path
+            d="M14 18l-6-6 6-6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+          />
+        </svg>
+      </div>
+    ),
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1024,  // Adjust for medium screens
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 5,  // 3 items on medium screens
         },
       },
       {
-        breakpoint: 768,
+        breakpoint: 768,  // Adjust for small screens
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 3,  // 2 items on small screens
         },
       },
       {
-        breakpoint: 480,
+        breakpoint: 480,  // Adjust for very small screens
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 2,  // 1 item on mobile screens
         },
       },
     ],
   };
 
   return (
-    <div className="max-w-7xl mx-auto py-8 px-4">
+    <div className="max-w-7xl mx-auto py-8 px-4 relative">
       <h2 className="text-2xl font-bold mb-6">Stocking Stuffers Under $50</h2>
       <Slider {...settings}>
         {products.map((product) => (
           <div key={product.id} className="p-4">
-            <div className="bg-white border rounded-lg shadow-sm p-4 hover:shadow-lg transition">
+            <div className="bg-white border rounded-lg shadow-lg p-6 hover:shadow-xl transition cursor-pointer h-[480px]">
               <img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-48 object-cover rounded-md mb-4"
+                className="w-full object-cover rounded-md mb-4"
               />
-              <p className="text-green-600 text-sm font-medium">
-                {product.arrival}
-              </p>
-              <h3 className="text-gray-800 font-semibold">{product.name}</h3>
+              <p className="text-green-600 text-sm font-medium">{product.arrival}</p>
+              <h3 className="text-gray-800 font-semibold text-lg">{product.name}</h3>
               <p className="text-gray-600 text-sm">
                 {product.price}{" "}
                 {product.originalPrice && (
-                  <span className="line-through">{product.originalPrice}</span>
+                  <span className="line-through text-gray-400">{product.originalPrice}</span>
                 )}
               </p>
               <div className="flex items-center space-x-1 text-sm mt-2">

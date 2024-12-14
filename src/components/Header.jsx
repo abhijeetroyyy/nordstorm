@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import { Search, User, ShoppingBag, Store, List, Gift } from "lucide-react";
 
 // Memoized NavLink for better performance
@@ -14,6 +14,18 @@ const NavLink = memo(({ href, label, icon: Icon, className = "" }) => (
 ));
 
 const Header = () => {
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+
+  // Handle mouse enter/leave for both the Sign In button and dropdown menu
+  const handleDropdownToggle = (visible) => {
+    setDropdownVisible(visible);
+  };
+
+  // Handle Sign In button click
+  const handleSignInClick = () => {
+    setDropdownVisible((prevState) => !prevState); // Toggle visibility
+  };
+
   return (
     <header className="w-full bg-white">
       {/* Announcement Bar */}
@@ -54,16 +66,58 @@ const Header = () => {
         </div>
 
         {/* User Options */}
-        <div className="flex items-center space-x-6 text-sm font-rackSans md:flex">
+        <div className="relative flex z-10 items-center space-x-6 text-sm font-rackSans md:flex">
           {/* Sign In with Dropdown */}
-          <div className="relative group">
-            <NavLink href="#" label="Sign In" icon={User} />
-            <div className="absolute left-0 hidden mt-2 w-40 bg-white border border-gray-300 rounded-md shadow-lg group-hover:block transition-all duration-200 ease-in-out">
-              <NavLink href="#" label="My Account" />
-              <NavLink href="#" label="Orders" />
-              <NavLink href="#" label="Wishlist" />
-              <NavLink href="#" label="Sign Out" />
-            </div>
+          <div
+            className="relative group"
+            onMouseEnter={() => handleDropdownToggle(true)}
+            onMouseLeave={() => handleDropdownToggle(false)}
+          >
+            <NavLink
+              href="#"
+              label="Sign In"
+              icon={User}
+              onClick={handleSignInClick} // Added click handler
+            />
+            {dropdownVisible && (
+              <div
+                className="absolute left-0 mt-2 w-72 bg-white border border-gray-300 rounded-lg shadow-lg"
+                onMouseEnter={() => handleDropdownToggle(true)} // Keep visible when hovering over the dropdown
+                onMouseLeave={() => handleDropdownToggle(false)} // Hide when the cursor leaves the dropdown
+              >
+                {/* Dropdown Content */}
+                <div className="p-4 border-b">
+                  <button className="w-full bg-blue-500 text-white text-sm py-2 px-4 rounded hover:bg-blue-600">
+                    Sign In | Create Account
+                  </button>
+                </div>
+                <div className="p-4">
+                  <h4 className="font-semibold mb-2">Your Account</h4>
+                  <ul className="space-y-2">
+                    <NavLink href="#" label="Purchases" />
+                    <NavLink href="#" label="Wish List" />
+                    <NavLink href="#" label="The Nordy Club Rewards" />
+                    <NavLink href="#" label="Shipping Addresses" />
+                    <NavLink href="#" label="Payment Methods" />
+                    <NavLink href="#" label="Pay & Manage Nordstrom Card" />
+                  </ul>
+                </div>
+                <div className="p-4 border-t">
+                  <h4 className="font-semibold mb-2">Account Settings</h4>
+                  <ul className="space-y-2">
+                    <NavLink href="#" label="Password & Personal Info" />
+                    <NavLink href="#" label="Email & Mail Preferences" />
+                  </ul>
+                </div>
+                <div className="p-4 border-t">
+                  <h4 className="font-semibold mb-2">Need Help?</h4>
+                  <ul className="space-y-2">
+                    <NavLink href="#" label="Contact Us" />
+                    <NavLink href="#" label="Find a Store" />
+                  </ul>
+                </div>
+              </div>
+            )}
           </div>
 
           <NavLink href="#" label="Store" icon={Store} />
